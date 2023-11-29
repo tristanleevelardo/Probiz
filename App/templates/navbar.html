@@ -27,11 +27,143 @@
       <li class="nav-item nav-item-custom">
         <a class="nav-link" href="#">About</a>
       </li>
+
+      <!-- Sidebar/menu content -->
     </ul>
   </div>
 </nav>
+<!-- Sidebar/menu content -->
+<div class="sidebar" id="sidebar">
+  <ul class="list-unstyled">
+    <li>
+      <a href="#" class="notes-link">Notes</a>
+      <i class="fa-solid fa-pen" style="color: white"></i>
+      <hr />
+    </li>
+
+    <li id="menu-toggle">
+      <button class="chevron-btn">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </li>
+  </ul>
+</div>
+<div class="popup-container" id="popup-container">
+  <div class="popup-content">
+    <div class="popup-header">
+      <span class="close-btn" id="close-btn">&times;</span>
+    </div>
+    <div class="popup-body">
+      <div id="editor-container"></div>
+    </div>
+  </div>
+</div>
 
 <style>
+  /* Popup container styles */
+
+  #editor-container {
+    height: 500px;
+  }
+  .popup-container {
+    display: none;
+    position: absolute;
+    bottom: 590px;
+    left: 20px;
+    width: fit-content;
+    height: fit-content;
+    z-index: 999;
+  }
+
+  /* Popup content styles */
+  .popup-content {
+    width: 730px;
+    height: 570px;
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  /* Popup header styles */
+  .popup-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .close-btn {
+    cursor: pointer;
+  }
+
+  /* Popup body styles */
+  .popup-body {
+    margin-top: 10px;
+  }
+
+  .list-unstyled {
+    width: 100%;
+    text-align: right;
+    color: white;
+  }
+  .chevron-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .fas {
+    position: absolute;
+    top: 50%;
+    right: 230px;
+    background-color: #333;
+    z-index: 9999;
+    color: white;
+    border-radius: 60px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    width: 40px;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -240;
+    width: 250px;
+    padding-right: 10px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+    align-items: flex-end;
+    height: 100%;
+    background-color: #333;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar.active {
+    right: 0; /* Show sidebar when active class is added */
+  }
+
+  .sidebar ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  .sidebar ul li {
+    padding: 8px;
+    font-size: 18px;
+  }
+
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .sidebar ul li a:hover {
+    color: #ccc;
+  }
+
   .nav-bar-custom {
     opacity: 0.8;
   }
@@ -54,3 +186,35 @@
     font-weight: bold;
   }
 </style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Retrieve the content from local storage and set it in the editor
+    var storedContent = localStorage.getItem("quillContent");
+    var quill = new Quill("#editor-container", {
+      theme: "snow",
+    });
+
+    if (storedContent) {
+      quill.clipboard.dangerouslyPasteHTML(storedContent);
+    }
+
+    var notesLinks = document.querySelectorAll(".notes-link");
+    var popupContainer = document.getElementById("popup-container");
+    var closeBtn = document.getElementById("close-btn");
+
+    notesLinks.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        popupContainer.style.display = "block";
+      });
+    });
+
+    closeBtn.addEventListener("click", function () {
+      // Get the HTML content from the editor and save it to local storage
+      var editorContent = document.querySelector(".ql-editor").innerHTML;
+      localStorage.setItem("quillContent", editorContent);
+
+      popupContainer.style.display = "none";
+    });
+  });
+</script>

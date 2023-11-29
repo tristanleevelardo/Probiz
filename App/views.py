@@ -6,7 +6,7 @@ from openai import OpenAI
 
 client = OpenAI(
     # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key="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",
+    api_key="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",
 )
 
 

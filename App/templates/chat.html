@@ -3,7 +3,7 @@
 <div class="container">
   <div class="card-custom">
     <div class="upper">
-      <img src="{% static "images/probiz-logo.png" %}" style="height: 100px;
+      <img src="{% static "images/probiz-logo.png" %}" style="height: 70px;
       width: auto;" alt="">
     </div>
     <div class="bottom-part">
@@ -13,7 +13,7 @@
           <!-- Messages will be appended here -->
         </div>
       </div>
-      <div>
+      <div class="question-container">
         <ul class="questions">
           <li class="question-item">
             How to determine the target market for the product/ service?
@@ -57,6 +57,21 @@
   </div>
 </div>
 <style>
+  .question-container {
+    margin-top: 20px;
+  }
+  .options {
+    position: fixed;
+    border: none;
+    background-color: transparent;
+    margin-left: -750px;
+    margin-top: -50px;
+    font-size: 30px;
+    padding: 20px;
+  }
+  .options:hover {
+    cursor: pointer;
+  }
   .questions {
     list-style: none;
     display: flex;
@@ -84,17 +99,23 @@
     bottom: 20px;
   }
 
-  .upper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  .upper img {
+    position: fixed;
+    right: 400px;
+    margin-top: 30px;
+    transform: translate(-50%, -50%);
   }
+  .chat-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
   .card-custom {
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
     width: 800px;
     height: 800px;
@@ -181,6 +202,12 @@
     align-self: flex-end;
   }
 
+  .bottom-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 250px;
+  }
   .reply-message {
     color: black;
     background-color: #eaeaea;
@@ -191,6 +218,13 @@
     align-self: flex-start;
   }
   @media only screen and (max-width: 1366px) {
+    .upper img {
+      right: 250px;
+      bottom: 480px;
+    }
+    .options {
+      margin-left: -490px;
+    }
     .container {
       right: 10px;
       bottom: 10px;
@@ -198,17 +232,19 @@
     .card-custom {
       width: 570px;
       height: 570px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
 
     .form-control-custom {
       width: 450px;
     }
- 
- 
 
     .chat-cloud {
-      width: 100%; /* Adjust the width to fit the container */
+      width: 540px; /* Adjust the width to fit the container */
       display: flex;
+      margin-left: 30px;
       flex-direction: column;
       padding: 10px; /* Add padding for better appearance */
       overflow-y: auto; /* Enable vertical scrolling */
@@ -234,6 +270,11 @@
       margin-bottom: 5px;
       align-self: flex-start;
     }
+
+    .chat-box {
+      height: 300px;
+      width: 100%;
+    }
   }
 </style>
 <!-- Include the script after jQuery and Bootstrap -->
@@ -250,6 +291,13 @@
 
 <!-- Your custom script for handling the send button -->
 <script>
+  $(document).ready(function () {
+    $("#menu-toggle button").click(function (e) {
+      e.preventDefault();
+      $("#sidebar").toggleClass("active");
+    });
+  });
+
   $(document).ready(function () {
     var introductionMade = false;
     var questions = $(".question-item");

@@ -9,6 +9,13 @@ client = OpenAI(
     api_key="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",
 )
 
+def resources(request):
+     return render(request, 'resources.html',{})
+def tutorials(request):
+     return render(request, 'tutorials.html',{})
+def about(request):
+     return render(request, 'about.html',{})
+
 
 def home(request):
      return render(request, 'index.html',{})

@@ -1,27 +1,144 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 
+<div class="container">
+  <div class="card-custom">
+    <div class="upper">
+      <img src="{% static "images/probiz-logo.png" %}" style="height: 100px;
+      width: auto;" alt="">
+    </div>
+    <div class="bottom-part">
+      <div class="chat-box" id="chat-box">
+        <!-- Chat messages will be displayed here -->
+        <div class="chat-cloud" id="chat-messages">
+          <!-- Messages will be appended here -->
+        </div>
+      </div>
+      <div>
+        <ul class="questions">
+          <li class="question-item">
+            How to determine the target market for the product/ service?
+          </li>
+          <li class="question-item">
+            How to determine the unique value proposition (UVP) of the business?
+          </li>
+          <li class="question-item">What is the marketing strategy?</li>
+          <li class="question-item">
+            Give some scalability plans for the business.
+          </li>
+          <li class="question-item">
+            What are the funding requirements and sources?
+          </li>
+          <li class="question-item">
+            Always have a recommended article or blogs through URL
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer-custom">
+        <form id="message-form">
+          {% csrf_token %}
+          <div class="input-group-custom">
+            <!-- Input box for typing messages -->
+            <input
+              type="text"
+              id="message-input"
+              class="form-control-custom"
+              placeholder="Ask me anything or type a message..."
+            />
+            <!-- Button to send the message -->
+            <div class="input-group-append-custom">
+              <button class="btn-custom" type="button" id="send-button">
+                Send
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
+  .questions {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .question-item {
+    text-wrap: nowrap;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 5px 20px;
+  }
+  .question-item:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
   .container {
     margin-top: 30px;
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .upper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .card-custom {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 800px;
+    height: 800px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 20px;
+  }
+
+  .btn-custom {
+    border-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+  }
+
+  .btn-custom:hover {
+    background-color: #4e5a66;
+    color: white;
+  }
+
+  .card-footer-custom {
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
   }
-
-  .col-md-8 {
-    width: 70%; /* Adjust the width of the chat box as needed */
-    margin-right: 0%; /* Adjust the negative margin to move it to the right */
+  .input-group-custom {
+    width: 100%;
+    display: flex;
+    align-items: center;
   }
-
-  .card {
+  .form-control-custom {
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    width: 680px;
+    padding: 10px 20px;
     border: 1px solid #ccc;
-    border-radius: 10px;
   }
-
+  .input-group {
+    width: 100%;
+  }
   .card-body {
-    height: 400px;
     overflow-y: auto;
   }
 
@@ -44,72 +161,156 @@
     font-size: 1.5rem;
     padding: 15px 30px;
   }
+
+  .chat-cloud {
+    width: 100%; /* Adjust the width to fit the container */
+    display: flex;
+    flex-direction: column;
+    padding: 10px; /* Add padding for better appearance */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 600px; /* Set maximum height and enable scrolling */
+  }
+
+  .my-message {
+    background-color: #4e5a66;
+    border-radius: 15px;
+    color: white;
+    padding: 10px;
+    max-width: 70%;
+    margin-bottom: 5px;
+    align-self: flex-end;
+  }
+
+  .reply-message {
+    color: black;
+    background-color: #eaeaea;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 70%;
+    margin-bottom: 5px;
+    align-self: flex-start;
+  }
 </style>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="card">
-        <div class="card-body chat-box" id="chat-box">
-          <!-- Chat messages will be displayed here -->
-          <div id="chat-messages"></div>
-        </div>
-        <div class="card-footer">
-          <form id="message-form">
-            {% csrf_token %}
-            <div class="input-group">
-              <!-- Input box for typing messages -->
-              <input type="text" id="message-input" class="form-control" placeholder="Type your message...">
-              <!-- Button to send the message -->
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="send-button">Send</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Include the script after jQuery and Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+  crossorigin="anonymous"
+></script>
 
 <!-- Your custom script for handling the send button -->
 <script>
   $(document).ready(function () {
+    var introductionMade = false;
+    var questions = $(".question-item");
+    var currentQuestionIndex = 0;
+
+    // Function to show the next question and hide the rest
+    function showNextQuestion() {
+      if (currentQuestionIndex < questions.length) {
+        questions.hide();
+        $(questions[currentQuestionIndex]).show();
+      }
+    }
+
+    // Show the first question initially
+    showNextQuestion();
+
+    // Event listener for question item click
+    $(".question-item").on("click", function () {
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      var question = $(this).text(); // Get the clicked question
+
+      // Append the selected question to the chat cloud
+      $("#chat-messages").append('<p class="my-message">' + question + "</p>");
+      $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+
+      // Send the selected question to the server
+      $.ajax({
+        type: "POST",
+        url: '{% url "send_message" %}',
+        data: { message: question, csrfmiddlewaretoken: csrftoken },
+        dataType: "json",
+        success: function (data) {
+          if (data.status === "success") {
+            var replygpt = data.replygpt;
+
+            if (replygpt && !introductionMade) {
+              if (
+                !replygpt.includes(
+                  "Sure, I will keep my responses to three sentences."
+                )
+              ) {
+                replygpt = "Hi, I'm probiz. " + replygpt;
+                introductionMade = true;
+              }
+            }
+
+            $("#chat-messages").append(
+              '<p class="reply-message">' + replygpt + "</p>"
+            );
+            $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+            speakText(replygpt);
+          }
+        },
+        error: function (xhr, errmsg, err) {
+          // Handle errors if needed
+        },
+      });
+
+      // Show the next question
+      currentQuestionIndex++;
+      showNextQuestion();
+    });
+
     $("#send-button").on("click", function () {
       // Get the CSRF token directly from the form
-      var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
       // Get the message from the input box
       var message = $("#message-input").val();
 
       // Append the user's message to the chat box
-      $("#chat-messages").append('<p class="my-message">' + message + '</p>');
+      $("#chat-messages").append('<p class="my-message">' + message + "</p>");
 
       // Clear the input box
-      $("#message-input").val('');
+      $("#message-input").val("");
 
       // Scroll to the bottom of the chat box
       $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
 
       // Send the message to the server with the CSRF token
       $.ajax({
-        type: 'POST',
-        url: '{% url "send_message" %}',  // Update with your actual URL name
-        data: {'message': message, csrfmiddlewaretoken: csrftoken},  // Include the CSRF token
-        dataType: 'json',
+        type: "POST",
+        url: '{% url "send_message" %}', // Update with your actual URL name
+        data: { message: message, csrfmiddlewaretoken: csrftoken }, // Include the CSRF token
+        dataType: "json",
         success: function (data) {
-          // Handle success if needed
-          if (data.status === 'success') {
-            // Access the generated content from the JSON response
+          if (data.status === "success") {
             var replygpt = data.replygpt;
 
-            // Append the generated content to the chat box
-            $("#chat-messages").append('<p class="reply-message">' + replygpt + '</p>');
+            // Check if the bot message is received and introduction hasn't been made
+            if (replygpt && !introductionMade) {
+              // Check if the response is not the default bot introduction
+              if (
+                !replygpt.includes(
+                  "Sure, I will keep my responses to three sentences."
+                )
+              ) {
+                replygpt = "Hi, I'm probiz. " + replygpt;
+                introductionMade = true; // Set the flag to true after introduction
+              }
+            }
 
+            // Append the generated content to the chat box
+            $("#chat-messages").append(
+              '<p class="reply-message">' + replygpt + "</p>"
+            );
             // Scroll to the bottom of the chat box
             $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
 
@@ -119,7 +320,7 @@
         },
         error: function (xhr, errmsg, err) {
           // Handle errors if needed
-        }
+        },
       });
     });
 

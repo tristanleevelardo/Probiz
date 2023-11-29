@@ -1,23 +1,39 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-  <style>
-    .container {
-      margin-top: 252px; /* Adjust the margin-top value as needed */
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+  .container {
+    position: absolute;
+    top: 370;
+    left: 50;
+    display: flex;
+    gap: 30px;
+  }
 
-    .container .btn-primary {
-      font-size: 1.5rem; /* Adjust the font size as needed */
-      padding: 10px 20px; /* Adjust the padding as needed */
-      margin-right: 10px !important; /* Adjust the margin-right value as needed */
-    }
-  </style>
+  .button-custom {
+    padding: 10px 20px;
+    width: 500px;
+    border: 1px solid white;
+    text-decoration: none;
+    font-size: 40px;
+    color: white;
+  }
+  .button-custom:hover {
+    background-color: white;
+    color: black;
+    transition: ease-in-out 0.3s;
+  }
+  .active {
+    background-color: #bfbfbf;
+    color: black;
+  }
+</style>
 
-  <div class="container">
-    <a href="{% url 'chat' %}" class="btn btn-primary">Go to Chat</a>
-  </div>
+<div class="container">
+  <span class="width">
+    <a href="{% url 'chat' %}" class="button-custom active">PROBIZ</a>
+  </span>
+  <span class="width">
+    <a href="{% url 'chat' %}" class="button-custom">EXPLORE</a>
+  </span>
+</div>
 
 {% endblock %}

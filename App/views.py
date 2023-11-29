@@ -6,7 +6,7 @@ from openai import OpenAI
 
 client = OpenAI(
     # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key="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",
+    api_key="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",
 )
 
 
@@ -31,7 +31,6 @@ class SendMessageView(View):
     model="gpt-3.5-turbo",
 )
         replygpt= (chat_completion.choices[0].message.content)
-        replygpt=(f"Hi im probiz,  {replygpt} ")
  
     
         return JsonResponse({'status': 'success', 'replygpt': replygpt})
